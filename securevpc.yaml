@@ -1,6 +1,29 @@
-Description: This
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Creates an AWS VPC with public and private subnets spread over two availability zones.
 
 Parameters:
   EnvironmentName:
-    Description: An environment name that is prefixed to resource names
+    Description: Please enter an environment name to identify each stack resource
     Type: String
+  
+  CIDRBlock:
+    Description: Please enter the CIDR block for the VPC
+    Type: String
+    Default: 10.0.0.0/16
+
+Resources:
+  VPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: !Ref CIDRBlock
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+      Tags:
+        - Key: Name
+          Value: !Ref EnvironmentName
+
+Outputs:
+  VPC:
+    Description: A reference to the created VPC
+    Value: !Ref VPC
+
