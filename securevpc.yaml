@@ -11,15 +11,35 @@ Parameters:
     Type: String
     Default: 10.0.0.0/16
 
-  CIDRBlockPub1:
-    Description: Please enter the CIDR block for the public subnet in the first AZ
+  CIDRBlockPubWeb1:
+    Description: Please enter the CIDR block for the public web server subnet in the 1st AZ
     Type: String
     Default: 10.0.0.0/24
 
-  CIDRBlockPub2:
-    Description: Please enter the CIDR block for the public subnet in the second AZ
+  CIDRBlockPubWeb2:
+    Description: Please enter the CIDR block for the public web server subnet in the 2nd AZ
     Type: String
-    Default: 10.0.4.0/24
+    Default: 10.0.8.0/24
+
+  CIDRBlockPrivApp1:
+    Description: Please enter the CIDR block for the private app server subnet in the 1st AZ
+    Type: String
+    Default: 10.0.1.0/24
+
+  CIDRBlockPrivApp2:
+    Description: Please enter the CIDR block for the private app server subnet in the 2nd AZ
+    Type: String
+    Default: 10.0.9.0/24
+
+  CIDRBlockPrivDB1:
+    Description: Please enter the CIDR block for the private DB server subnet in the 1st AZ
+    Type: String
+    Default: 10.0.2.0/24
+
+  CIDRBlockPrivDB2:
+    Description: Please enter the CIDR block for the private DB server subnet in the 2nd AZ
+    Type: String
+    Default: 10.0.10.0/24
 
 Resources:
   VPC:
@@ -32,30 +52,97 @@ Resources:
         - Key: Name
           Value: !Ref EnvironmentName
  
-  PublicSubnet1:
+  PublicSubnetWeb1:
     Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref VPC
       AvailabilityZone: !Select [ 0, !GetAZs '' ]
-      CidrBlock: !Ref CIDRBlockPub1
+      CidrBlock: !Ref CIDRBlockPubWeb1
       MapPublicIpOnLaunch: true
       Tags:
         - Key: Name
-          Value: !Sub ${EnvironmentName} Public Subnet (AZ1)
+          Value: !Sub ${EnvironmentName} Public Subnet Web 1 (AZ1)
 
-  PublicSubnet2:
+  PublicSubnetWeb2:
     Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref VPC
       AvailabilityZone: !Select [ 1, !GetAZs  '' ]
-      CidrBlock: !Ref CIDRBlockPub2
+      CidrBlock: !Ref CIDRBlockPubWeb2
       MapPublicIpOnLaunch: true
       Tags:
         - Key: Name
-          Value: !Sub ${EnvironmentName} Public Subnet (AZ2)
+          Value: !Sub ${EnvironmentName} Public Subnet Web 2 (AZ2)
+
+  PrivateSubnetApp1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      AvailabilityZone: !Select [ 0, !GetAZs '' ]
+      CidrBlock: !Ref CIDRBlockPrivApp1
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: !Sub ${EnvironmentName} Private Subnet App 1 (AZ1)
+
+  PrivateSubnetApp2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      AvailabilityZone: !Select [ 1, !GetAZs  '' ]
+      CidrBlock: !Ref CIDRBlockPrivApp2
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: !Sub ${EnvironmentName} Private Subnet App 2 (AZ2)
+
+  PrivateSubnetDB1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      AvailabilityZone: !Select [ 0, !GetAZs '' ]
+      CidrBlock: !Ref CIDRBlockPrivDB1
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: !Sub ${EnvironmentName} Private Subnet DB 1 (AZ1)
+
+  PrivateSubnetDB2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      AvailabilityZone: !Select [ 1, !GetAZs  '' ]
+      CidrBlock: !Ref CIDRBlockPrivDB2
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: !Sub ${EnvironmentName} Private Subnet DB 2 (AZ2)
 
 Outputs:
   VPC:
     Description: A reference to the created VPC
     Value: !Ref VPC
 
+  PublicSubnetWeb1:
+    Description: A reference to the public web server subnet in the 1st AZ
+    Value: !Ref PublicSubnetWeb1
+
+  PublicSubnetWeb2:
+    Description: A reference to the public web serversubnet in the 2nd AZ
+    Value: !Ref PublicSubnetWeb2
+
+  PrivateSubnetApp1:
+    Description: A reference to the public app server subnet in the 1st AZ
+    Value: !Ref PrivateSubnetApp1
+
+  PrivateSubnetApp2:
+    Description: A reference to the public app server subnet in the 2nd AZ
+    Value: !Ref PrivateSubnetApp2
+
+  PrivateSubnetDB1:
+    Description: A reference to the public DB subnet in the 1st AZ
+    Value: !Ref PrivateSubnetDB1
+
+  PrivateSubnetDB2:
+    Description: A reference to the public DB subnet in the 2nd AZ
+    Value: !Ref PrivateSubnetDB2
