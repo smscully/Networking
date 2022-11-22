@@ -6,16 +6,26 @@ Parameters:
     Description: Please enter an environment name to identify each stack resource
     Type: String
   
-  CIDRBlock:
+  CIDRBlockVPC:
     Description: Please enter the CIDR block for the VPC
     Type: String
     Default: 10.0.0.0/16
+
+  CIDRBlockPub1:
+    Description: Please enter the CIDR block for the public subnet in the first AZ
+    Type: String
+    Default: 10.0.0.0/24
+
+  CIDRBlockPub2:
+    Description: Please enter the CIDR block for the public subnet in the second AZ
+    Type: String
+    Default: 10.0.4.0/24
 
 Resources:
   VPC:
     Type: AWS::EC2::VPC
     Properties:
-      CidrBlock: !Ref CIDRBlock
+      CidrBlock: !Ref CIDRBlockVPC
       EnableDnsSupport: true
       EnableDnsHostnames: true
       Tags:
@@ -27,7 +37,7 @@ Resources:
     Properties:
       VpcId: !Ref VPC
       AvailabilityZone: !Select [ 0, !GetAZs '' ]
-      CidrBlock: !Ref PublicSubnet1CIDR
+      CidrBlock: !Ref CIDRBlockPub1
       MapPublicIpOnLaunch: true
       Tags:
         - Key: Name
@@ -38,7 +48,7 @@ Resources:
     Properties:
       VpcId: !Ref VPC
       AvailabilityZone: !Select [ 1, !GetAZs  '' ]
-      CidrBlock: !Ref PublicSubnet2CIDR
+      CidrBlock: !Ref CIDRBlockPub2
       MapPublicIpOnLaunch: true
       Tags:
         - Key: Name
