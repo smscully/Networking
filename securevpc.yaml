@@ -5,39 +5,44 @@ Parameters:
   EnvironmentName:
     Description: Please enter an environment name to identify each stack resource
     Type: String
-  
+
+  AvailabilityZone1:
+    Description: Please enter the first Availability Zone
+    Type: AWS::EC2::AvailabilityZone::Name
+    Default: !Select [ 0, !GetAZs '' ]
+    
   VpcCIDR:
     Description: Please enter the CIDR block for the VPC
     Type: String
     Default: 10.0.0.0/16
 
   PublicSubnetWeb1CIDR:
-    Description: Please enter the CIDR block for the public web server subnet in the 1st AZ
+    Description: Please enter the CIDR block for the public web server subnet in the first Availability Zone
     Type: String
     Default: 10.0.10.0/24
 
   PublicSubnetWeb2CIDR:
-    Description: Please enter the CIDR block for the public web server subnet in the 2nd AZ
+    Description: Please enter the CIDR block for the public web server subnet in the second Availability Zone
     Type: String
     Default: 10.0.11.0/24
 
   PrivateSubnetApp1CIDR:
-    Description: Please enter the CIDR block for the private app server subnet in the 1st AZ
+    Description: Please enter the CIDR block for the private app server subnet in the first Availability Zone
     Type: String
     Default: 10.0.20.0/24
 
   PrivateSubnetApp2CIDR:
-    Description: Please enter the CIDR block for the private app server subnet in the 2nd AZ
+    Description: Please enter the CIDR block for the private app server subnet in the second Availability Zone
     Type: String
     Default: 10.0.21.0/24
 
   PrivateSubnetDB1CIDR:
-    Description: Please enter the CIDR block for the private DB server subnet in the 1st AZ
+    Description: Please enter the CIDR block for the private DB server subnet in the first Availability Zone
     Type: String
     Default: 10.0.30.0/24
 
   PrivateSubnetDB2CIDR:
-    Description: Please enter the CIDR block for the private DB server subnet in the 2nd AZ
+    Description: Please enter the CIDR block for the private DB server subnet in the second Availability Zone
     Type: String
     Default: 10.0.31.0/24
 
@@ -189,25 +194,25 @@ Outputs:
     Value: !Ref VPC
 
   PublicSubnetWeb1:
-    Description: A reference to the public subnet for web servers in the 1st AZ
+    Description: A reference to the public subnet for web servers in the first Availability Zone
     Value: !Ref PublicSubnetWeb1
 
   PublicSubnetWeb2:
-    Description: A reference to the public subnet for web servers in the 2nd AZ
+    Description: A reference to the public subnet for web servers in the second Availability Zone
     Value: !Ref PublicSubnetWeb2
 
   PrivateSubnetApp1:
-    Description: A reference to the private subnet for app servers in the 1st AZ
+    Description: A reference to the private subnet for app servers in the first Availability Zone
     Value: !Ref PrivateSubnetApp1
 
   PrivateSubnetApp2:
-    Description: A reference to the private subnet for app servers in the 2nd AZ
+    Description: A reference to the private subnet for app servers in the second Availability Zone
     Value: !Ref PrivateSubnetApp2
 
   PrivateSubnetDB1:
-    Description: A reference to the private subnet for database servers in the 1st AZ
+    Description: A reference to the private subnet for database servers in the first Availability Zone
     Value: !Ref PrivateSubnetDB1
 
   PrivateSubnetDB2:
-    Description: A reference to the private subnet for database servers in the 2nd AZ
+    Description: A reference to the private subnet for database servers in the second Availability Zone
     Value: !Ref PrivateSubnetDB2
