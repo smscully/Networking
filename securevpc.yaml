@@ -21,22 +21,22 @@ Parameters:
     Type: String
     Default: 10.0.11.0/24
 
-  PublicSubnetApp1CIDR:
+  PrivateSubnetApp1CIDR:
     Description: Please enter the CIDR block for the private app server subnet in the 1st AZ
     Type: String
     Default: 10.0.20.0/24
 
-  PublicSubnetApp2CIDR:
+  PrivateSubnetApp2CIDR:
     Description: Please enter the CIDR block for the private app server subnet in the 2nd AZ
     Type: String
     Default: 10.0.21.0/24
 
-  PublicSubnetDB1CIDR:
+  PrivateSubnetDB1CIDR:
     Description: Please enter the CIDR block for the private DB server subnet in the 1st AZ
     Type: String
     Default: 10.0.30.0/24
 
-  PublicSubnetDB2CIDR:
+  PrivateSubnetDB2CIDR:
     Description: Please enter the CIDR block for the private DB server subnet in the 2nd AZ
     Type: String
     Default: 10.0.31.0/24
@@ -92,7 +92,7 @@ Resources:
     Properties:
       VpcId: !Ref VPC
       AvailabilityZone: !Select [ 0, !GetAZs '' ]
-      CidrBlock: !Ref PublicSubnetApp1CIDR
+      CidrBlock: !Ref PrivateSubnetApp1CIDR
       MapPublicIpOnLaunch: false
       Tags:
         - Key: Name
@@ -103,7 +103,7 @@ Resources:
     Properties:
       VpcId: !Ref VPC
       AvailabilityZone: !Select [ 1, !GetAZs  '' ]
-      CidrBlock: !Ref PublicSubnetApp2CIDR
+      CidrBlock: !Ref PrivateSubnetApp2CIDR
       MapPublicIpOnLaunch: false
       Tags:
         - Key: Name
@@ -114,7 +114,7 @@ Resources:
     Properties:
       VpcId: !Ref VPC
       AvailabilityZone: !Select [ 0, !GetAZs '' ]
-      CidrBlock: !Ref PublicSubnetDB1CIDR
+      CidrBlock: !Ref PrivateSubnetDB1CIDR
       MapPublicIpOnLaunch: false
       Tags:
         - Key: Name
@@ -125,7 +125,7 @@ Resources:
     Properties:
       VpcId: !Ref VPC
       AvailabilityZone: !Select [ 1, !GetAZs  '' ]
-      CidrBlock: !Ref PublicSubnetDB2CIDR
+      CidrBlock: !Ref PrivateSubnetDB2CIDR
       MapPublicIpOnLaunch: false
       Tags:
         - Key: Name
