@@ -136,7 +136,7 @@ Parameters:
   NumberOfAZs:
     Description: Please enter the number of AZs (min. 1; max. 4)
     Type: String
-    Allowed Values:
+    AllowedValues:
       - '1'
       - '2'
       - '3'
