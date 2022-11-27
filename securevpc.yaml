@@ -66,7 +66,7 @@ Metadata:
       CreateVPCFlowLogsToCloudWatch:
         default: Create VPC flow logs (CloudWatch)
       EnvironmentName:
-        Default: Envronment Name
+        default: Envronment Name
       NumberOfAZs:
         default: Number of Availability Zones
       PrivateSubnet1ACIDR:
@@ -134,7 +134,7 @@ Parameters:
     Description: Please select the Availability Zones for the subnets
     Type: List<AWS::EC2::AvailabilityZone::Name>
   NumberOfAZs:
-    Description: Please enter the number of AZs (min. 1; max. 4)
+    Description: Please enter the number of AZs
     Type: String
     AllowedValues:
       - '1'
