@@ -1,15 +1,16 @@
 AWSTemplateFormatVersion: "2010-09-09"
-Description: Creates a VPC with public web server, private app server, and private database server subnets, spread over two Availability Zones. Also creates an Internet Gateway, one NAT Gateway for each AZ, separate Route Tables for the public and private subnets, and seaparate Security Groups for the web, app, and database servers.
+Description: Creates a VPC with public web server, private app server, and private database server subnets,
+  spread over two Availability Zones. Also creates an Internet Gateway, one NAT Gateway for each AZ, separate
+  Route Tables for the public and private subnets, and seaparate Security Groups for the web, app, and database servers.
 
 Parameters:
   EnvironmentName:
     Description: Please enter an environment name to identify each stack resource
     Type: String
 
-  AvailabilityZone1:
-    Description: Please enter the first Availability Zone
-    Type: AWS::EC2::AvailabilityZone::Name
-    Default: !Select [ 0, !GetAZs '' ]
+  AvailabilityZones:
+    Description: Please select the Availability Zones for the subnets
+    Type: List<AWS::EC2::AvailabilityZone::Name>
     
   VpcCIDR:
     Description: Please enter the CIDR block for the VPC
