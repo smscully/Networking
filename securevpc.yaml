@@ -20,38 +20,23 @@ Metadata:
           - CreatePublicSubnets
           - PublicSubnet1CIDR
           - PublicSubnet2CIDR
-          - PublicSubnet3CIDR
-          - PublicSubnet4CIDR
-          - PublicSubnetTag1
-          - PublicSubnetTag2
-          - PublicSubnetTag3
           - CreatePrivateSubnets
           - CreateNATGateways
           - PrivateSubnet1ACIDR
           - PrivateSubnet2ACIDR
-          - PrivateSubnet3ACIDR
-          - PrivateSubnet4ACIDR
-          - PrivateSubnetATag1
-          - PrivateSubnetATag2
-          - PrivateSubnetATag3
           - CreateAdditionalPrivateSubnets
           - PrivateSubnet1BCIDR
           - PrivateSubnet2BCIDR
-          - PrivateSubnet3BCIDR
-          - PrivateSubnet4BCIDR
-          - PrivateSubnetBTag1
-          - PrivateSubnetBTag2
-          - PrivateSubnetBTag3
-          - VPCTenancy
+          - VpcTenancy
       - Label:
           default: VPC Flow Logs Configuration
         Parameters:
-          - CreateVPCFlowLogsToCloudWatch
-          - VPCFlowLogsLogFormat
-          - VPCFlowLogsLogGroupRetention
-          - VPCFlowLogsMaxAggregationInterval
-          - VPCFlowLogsTrafficType
-          - VPCFlowLogsCloudWatchKMSKey
+          - CreateVpcFlowLogsToCloudWatch
+          - VpcFlowLogsLogFormat
+          - VpcFlowLogsLogGroupRetention
+          - VpcFlowLogsMaxAggregationInterval
+          - VpcFlowLogsTrafficType
+          - VpcFlowLogsCloudWatchKMSKey
     ParameterLabels:
       AvailabilityZones:
         default: Availability Zones
@@ -77,99 +62,110 @@ Metadata:
         default: Private subnet 2A CIDR
       PrivateSubnet2BCIDR:
         default: Private subnet 2B with dedicated network ACL CIDR
-      PrivateSubnet3ACIDR:
-        default: Private subnet 3A CIDR
-      PrivateSubnet3BCIDR:
-        default: Private subnet 3B with dedicated network ACL CIDR
-      PrivateSubnet4ACIDR:
-        default: Private subnet 4A CIDR
-      PrivateSubnet4BCIDR:
-        default: Private subnet 4B with dedicated network ACL CIDR
-      PrivateSubnetATag1:
-        default: Tag pair 1 for private A subnets
-      PrivateSubnetATag2:
-        default: Tag pair 2 for private A subnets
-      PrivateSubnetATag3:
-        default: Tag pair 3 for private A subnets
-      PrivateSubnetBTag1:
-        default: Tag pair 1 for private B subnets
-      PrivateSubnetBTag2:
-        default: Tag pair 2 for private B subnets
-      PrivateSubnetBTag3:
-        default: Tag pair 3 for private B subnets
       PublicSubnet1CIDR:
         default: Public subnet 1 CIDR
       PublicSubnet2CIDR:
         default: Public subnet 2 CIDR
-      PublicSubnet3CIDR:
-        default: Public subnet 3 CIDR
-      PublicSubnet4CIDR:
-        default: Public subnet 4 CIDR
-      PublicSubnetTag1:
-        default: Tag pair 1 for public subnets
-      PublicSubnetTag2:
-        default: Tag pair 2 for public subnets
-      PublicSubnetTag3:
-        default: Tag pair 3 for public subnets
-      VPCCIDR:
+      VpcCIDR:
         default: VPC CIDR
-      VPCFlowLogsCloudWatchKMSKey:
+      VpcFlowLogsCloudWatchKMSKey:
         default: CloudWatch Logs KMS key for VPC flow logs
-      VPCFlowLogsLogFormat:
+      VpcFlowLogsLogFormat:
         default: VPC flow logs - log format
-      VPCFlowLogsLogGroupRetention:
+      VpcFlowLogsLogGroupRetention:
         default: VPC flow logs - log group retention
-      VPCFlowLogsMaxAggregationInterval:
+      VpcFlowLogsMaxAggregationInterval:
         default: VPC flow logs - max aggregation interval
-      VPCFlowLogsTrafficType:
+      VpcFlowLogsTrafficType:
         default: VPC flow logs - traffic type
-      VPCTenancy:
-        default: VPC tenancy
 
 Parameters:
-  EnvironmentName:
-    Description: Please enter an environment name to identify each stack resource
-    Type: String
   AvailabilityZones:
     Description: Please select the Availability Zones for the subnets
     Type: List<AWS::EC2::AvailabilityZone::Name>
+  CreateAdditionalPrivateSubnets:
+    Type: String
+    Description: Choose true to create additional private subnets with
+      dedicated network ACLs in each Availability Zone. If false, the CIDR
+      values for those subnets will be ignored. If true, the CreatePrivateSubnets
+      parameter must also be true, as these are additional private subnets
+    AllowedValues:
+      - 'true'
+      - 'false'
+    Default: 'false'
+  CreateNATGateways:
+    Type: String
+    Description: Choose false when creating only private subnets. If true, both
+      CreatePublicSubnets and CreatePrivateSubnets must also be true.
+    AllowedValues:
+      - 'true'
+      - 'false'
+    Default: 'true'
+  CreatePublicSubnets:
+    Type: String
+    Description: Choose false to create only private subnets. If false,
+      CreatePrivateSubnets must be true, and the CIDR parameters for all public
+      subnets will be ignored.
+    AllowedValues:
+      - 'true'
+      - 'false'
+    Default: 'true'
+  CreatePrivateSubnets:
+    Type: String
+    Description: Choose false to create only public subnets. If false, the CIDR parameters
+      for all private subnets will be ignored.
+    AllowedValues:
+      - 'true'
+      - 'false'
+    Default: 'true'
+  CreateVPCFlowLogsToCloudWatch:
+    Type: String
+    Description: Choose true to create VPC flow logs for the VPC and publish them to
+      CloudWatch. If false, VPC flow logs will not be created.
+    AllowedValues:
+      - 'true'
+      - 'false'
+    Default: 'false'
+  EnvironmentName:
+    Description: Please enter an environment name to identify each stack resource
+    Type: String
   NumberOfAZs:
-    Description: Please enter the number of AZs
+    Description: Please enter the number of Availability Zones
     Type: String
     AllowedValues:
       - '1'
       - '2'
-      - '3'
-      - '4'
     Default: '2'
+  PrivateSubnet1ACIDR:
+    Description: Please enter the CIDR block for the private subnet in Availability Zone 1
+    Type: String
+    Default: 10.0.20.0/24
+  PrivateSubnet1BCIDR:
+    Description: Please enter the CIDR block for the additional private subnet in Availability Zone 1
+    Type: String
+    Default: 10.0.30.0/24
+  PrivateSubnet2ACIDR:
+    Description: Please enter the CIDR block for the private subnet in Availability Zone 2
+    Type: String
+    Default: 10.0.21.0/24
+  PrivateSubnet2BCIDR:
+    Description: Please enter the CIDR block for the additional private subnet in Availability Zone 2
+    Type: String
+    Default: 10.0.31.0/24
+  PublicSubnet1CIDR:
+    Description: Please enter the CIDR block for the public subnet in the Availability Zone 1
+    Type: String
+    Default: 10.0.10.0/24
+  PublicSubnet2CIDR:
+    Description: Please enter the CIDR block for the public subnet in the Availability Zone 2
+    Type: String
+    Default: 10.0.11.0/24
   VpcCIDR:
     Description: Please enter the CIDR block for the VPC
     Type: String
+    AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/(1[6-9]|2[0-8]))$
+    ConstraintDescription: CIDR block must be in DDN format x.x.x.x/16-28
     Default: 10.0.0.0/16
-  PublicSubnetWeb1CIDR:
-    Description: Please enter the CIDR block for the public web server subnet in the first Availability Zone
-    Type: String
-    Default: 10.0.10.0/24
-  PublicSubnetWeb2CIDR:
-    Description: Please enter the CIDR block for the public web server subnet in the second Availability Zone
-    Type: String
-    Default: 10.0.11.0/24
-  PrivateSubnetApp1CIDR:
-    Description: Please enter the CIDR block for the private app server subnet in the first Availability Zone
-    Type: String
-    Default: 10.0.20.0/24
-  PrivateSubnetApp2CIDR:
-    Description: Please enter the CIDR block for the private app server subnet in the second Availability Zone
-    Type: String
-    Default: 10.0.21.0/24
-  PrivateSubnetDB1CIDR:
-    Description: Please enter the CIDR block for the private DB server subnet in the first Availability Zone
-    Type: String
-    Default: 10.0.30.0/24
-  PrivateSubnetDB2CIDR:
-    Description: Please enter the CIDR block for the private DB server subnet in the second Availability Zone
-    Type: String
-    Default: 10.0.31.0/24
 
 Resources:
   VPC:
