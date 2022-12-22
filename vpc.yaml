@@ -2,7 +2,7 @@ AWSTemplateFormatVersion: "2010-09-09"
 Description: Creates a VPC with subnets across two Availability Zones for public web servers, private app servers, 
   and private database servers. For connectivity, creates an Internet Gateway, NAT Gateways for each AZ, and Route
   Tables for the public and private subnets. Following security best practicies, implements Security Groups for the web,
-  app, and database servers, Network ACLs for the subnets, and a VPC Gateway Endpoints for S3 connectivity.
+  app, and database servers, Network ACLs for the subnets, and a VPC Gateway Endpoint for S3 connectivity.
 
 Metadata:
   License: Apache License, Version 3.0
@@ -13,36 +13,17 @@ Metadata:
         Parameters:
           - EnvironmentName
           - AvailabilityZones
-          - NumberOfAZs
       - Label:
           default: Network Configuration
         Parameters:
           - VpcCIDR
           - CreatePublicSubnets
-          - PublicSubnet1CIDR
-          - PublicSubnet2CIDR
-          - PublicSubnet3CIDR
-          - PublicSubnet4CIDR
-          - PublicSubnetTag1
-          - PublicSubnetTag2
-          - PublicSubnetTag3
-          - CreatePrivateSubnets
-          - CreateNATGateways
-          - PrivateSubnet1ACIDR
-          - PrivateSubnet2ACIDR
-          - PrivateSubnet3ACIDR
-          - PrivateSubnet4ACIDR
-          - PrivateSubnetATag1
-          - PrivateSubnetATag2
-          - PrivateSubnetATag3
-          - CreateAdditionalPrivateSubnets
-          - PrivateSubnet1BCIDR
-          - PrivateSubnet2BCIDR
-          - PrivateSubnet3BCIDR
-          - PrivateSubnet4BCIDR
-          - PrivateSubnetBTag1
-          - PrivateSubnetBTag2
-          - PrivateSubnetBTag3
+          - PublicSubnetWeb1CIDR
+          - PublicSubnetWeb2CIDR
+          - PrivateSubnetApp1CIDR
+          - PrivateSubnetApp2CIDR
+          - PrivateSubnetDB1CIDR
+          - PrivateSubnetDB2CIDR
           - VPCTenancy
       - Label:
           default: VPC Flow Logs Configuration
@@ -56,62 +37,22 @@ Metadata:
     ParameterLabels:
       AvailabilityZones:
         default: Availability Zones
-      CreateAdditionalPrivateSubnets:
-        default: Create additional private subnets
-      CreateNATGateways:
-        default: Create NAT gateways
-      CreatePrivateSubnets:
-        default: Create private subnets
-      CreatePublicSubnets:
-        default: Create public subnets
       CreateVPCFlowLogsToCloudWatch:
         default: Create VPC flow logs (CloudWatch)
       EnvironmentName:
         default: Envronment Name
-      NumberOfAZs:
-        default: Number of Availability Zones
-      PrivateSubnet1ACIDR:
-        default: Private subnet 1A CIDR
-      PrivateSubnet1BCIDR:
-        default: Private subnet 1B with dedicated network ACL CIDR
-      PrivateSubnet2ACIDR:
-        default: Private subnet 2A CIDR
-      PrivateSubnet2BCIDR:
-        default: Private subnet 2B with dedicated network ACL CIDR
-      PrivateSubnet3ACIDR:
-        default: Private subnet 3A CIDR
-      PrivateSubnet3BCIDR:
-        default: Private subnet 3B with dedicated network ACL CIDR
-      PrivateSubnet4ACIDR:
-        default: Private subnet 4A CIDR
-      PrivateSubnet4BCIDR:
-        default: Private subnet 4B with dedicated network ACL CIDR
-      PrivateSubnetATag1:
-        default: Tag pair 1 for private A subnets
-      PrivateSubnetATag2:
-        default: Tag pair 2 for private A subnets
-      PrivateSubnetATag3:
-        default: Tag pair 3 for private A subnets
-      PrivateSubnetBTag1:
-        default: Tag pair 1 for private B subnets
-      PrivateSubnetBTag2:
-        default: Tag pair 2 for private B subnets
-      PrivateSubnetBTag3:
-        default: Tag pair 3 for private B subnets
-      PublicSubnet1CIDR:
-        default: Public subnet 1 CIDR
-      PublicSubnet2CIDR:
-        default: Public subnet 2 CIDR
-      PublicSubnet3CIDR:
-        default: Public subnet 3 CIDR
-      PublicSubnet4CIDR:
-        default: Public subnet 4 CIDR
-      PublicSubnetTag1:
-        default: Tag pair 1 for public subnets
-      PublicSubnetTag2:
-        default: Tag pair 2 for public subnets
-      PublicSubnetTag3:
-        default: Tag pair 3 for public subnets
+      PrivateSubnetApp1CIDR:
+        default: Private Subnet App 1 CIDR
+      PrivateSubnetApp2CIDR:
+        default: Private Subnet App 2 CIDR
+      PrivateSubnetDB1CIDR:
+        default: Private Subnet DB 1 CIDR
+      PrivateSubnetDB2CIDR:
+        default: Private Subnet DB 2 CIDR
+      PublicSubnetWeb1CIDR:
+        default: Public Subnet Web 1 CIDR
+      PublicSubnetWeb2CIDR:
+        default: Public Subnet Web 2 CIDR
       VPCCIDR:
         default: VPC CIDR
       VPCFlowLogsCloudWatchKMSKey:
@@ -132,18 +73,9 @@ Parameters:
     Description: Please enter an environment name to identify each stack resource
     Type: String
   AvailabilityZones:
-    Description: Please select the Availability Zones for the subnets
+    Description: Please select two Availability Zones
     Type: List<AWS::EC2::AvailabilityZone::Name>
-  NumberOfAZs:
-    Description: Please enter the number of AZs
-    Type: String
-    AllowedValues:
-      - '1'
-      - '2'
-      - '3'
-      - '4'
-    Default: '2'
-  VpcCIDR:
+  VPCCIDR:
     Description: Please enter the CIDR block for the VPC
     Type: String
     Default: 10.0.0.0/16
@@ -368,7 +300,7 @@ Resources:
       RouteTableId: !Ref PrivateRouteTable2
       SubnetId: !Ref PrivateSubnetDB2
 
-  WebSecurityGroup:
+  SecurityGroupWeb:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: "Security group for web servers"
@@ -385,7 +317,7 @@ Resources:
           ToPort: 80
           CidrIp: 0.0.0.0/0
 
-  AppSecurityGroup:
+  SecurityGroupApp:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: "Security group for app servers"
@@ -401,6 +333,8 @@ Resources:
           FromPort: 80
           ToPort: 80
           CidrIp: 0.0.0.0/0
+  
+  NetworkACLWeb:
 
 Outputs:
   VPC:
