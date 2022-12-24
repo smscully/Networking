@@ -17,28 +17,15 @@ Metadata:
           default: Network Configuration
         Parameters:
           - VpcCIDR
-          - CreatePublicSubnets
           - PublicSubnetWeb1CIDR
           - PublicSubnetWeb2CIDR
           - PrivateSubnetApp1CIDR
           - PrivateSubnetApp2CIDR
           - PrivateSubnetDB1CIDR
           - PrivateSubnetDB2CIDR
-          - VPCTenancy
-      - Label:
-          default: VPC Flow Logs Configuration
-        Parameters:
-          - CreateVPCFlowLogsToCloudWatch
-          - VPCFlowLogsLogFormat
-          - VPCFlowLogsLogGroupRetention
-          - VPCFlowLogsMaxAggregationInterval
-          - VPCFlowLogsTrafficType
-          - VPCFlowLogsCloudWatchKMSKey
     ParameterLabels:
       AvailabilityZones:
         default: Availability Zones
-      CreateVPCFlowLogsToCloudWatch:
-        default: Create VPC flow logs (CloudWatch)
       EnvironmentName:
         default: Envronment Name
       PrivateSubnetApp1CIDR:
@@ -54,31 +41,32 @@ Metadata:
       PublicSubnetWeb2CIDR:
         default: Public Subnet Web 2 CIDR
       VPCCIDR:
-        default: VPC CIDR
-      VPCFlowLogsCloudWatchKMSKey:
-        default: CloudWatch Logs KMS key for VPC flow logs
-      VPCFlowLogsLogFormat:
-        default: VPC flow logs - log format
-      VPCFlowLogsLogGroupRetention:
-        default: VPC flow logs - log group retention
-      VPCFlowLogsMaxAggregationInterval:
-        default: VPC flow logs - max aggregation interval
-      VPCFlowLogsTrafficType:
-        default: VPC flow logs - traffic type
-      VPCTenancy:
+        default: VPC CIDR      VPCTenancy:
         default: VPC tenancy
 
 Parameters:
-  EnvironmentName:
-    Description: Please enter an environment name to identify each stack resource
-    Type: String
   AvailabilityZones:
     Description: Please select two Availability Zones
     Type: List<AWS::EC2::AvailabilityZone::Name>
-  VPCCIDR:
-    Description: Please enter the CIDR block for the VPC
+  EnvironmentName:
+    Description: Please enter an environment name to identify each stack resource
     Type: String
-    Default: 10.0.0.0/16
+  PrivateSubnetApp1CIDR:
+    Description: Please enter the CIDR block for the private application server subnet in the first Availability Zone
+    Type: String
+    Default: 10.0.20.0/24
+  PrivateSubnetApp2CIDR:
+    Description: Please enter the CIDR block for the private application server subnet in the second Availability Zone
+    Type: String
+    Default: 10.0.21.0/24
+  PrivateSubnetDB1CIDR:
+    Description: Please enter the CIDR block for the private database server subnet in the first Availability Zone
+    Type: String
+    Default: 10.0.30.0/24
+  PrivateSubnetDB2CIDR:
+    Description: Please enter the CIDR block for the private database server subnet in the second Availability Zone
+    Type: String
+    Default: 10.0.31.0/24
   PublicSubnetWeb1CIDR:
     Description: Please enter the CIDR block for the public web server subnet in the first Availability Zone
     Type: String
@@ -87,28 +75,16 @@ Parameters:
     Description: Please enter the CIDR block for the public web server subnet in the second Availability Zone
     Type: String
     Default: 10.0.11.0/24
-  PrivateSubnetApp1CIDR:
-    Description: Please enter the CIDR block for the private app server subnet in the first Availability Zone
+  VPCCIDR:
+    Description: Please enter the CIDR block for the VPC
     Type: String
-    Default: 10.0.20.0/24
-  PrivateSubnetApp2CIDR:
-    Description: Please enter the CIDR block for the private app server subnet in the second Availability Zone
-    Type: String
-    Default: 10.0.21.0/24
-  PrivateSubnetDB1CIDR:
-    Description: Please enter the CIDR block for the private DB server subnet in the first Availability Zone
-    Type: String
-    Default: 10.0.30.0/24
-  PrivateSubnetDB2CIDR:
-    Description: Please enter the CIDR block for the private DB server subnet in the second Availability Zone
-    Type: String
-    Default: 10.0.31.0/24
+    Default: 10.0.0.0/16
 
 Resources:
   VPC:
     Type: AWS::EC2::VPC
     Properties:
-      CidrBlock: !Ref VpcCIDR
+      CidrBlock: !Ref VPCCIDR
       EnableDnsSupport: true
       EnableDnsHostnames: true
       Tags:
@@ -218,87 +194,95 @@ Resources:
       AllocationId: !GetAtt NatGateway2EIP.AllocationId
       SubnetId: !Ref PublicSubnetWeb2
 
-  PublicRouteTable:
+  PublicSubnetWeb1RouteTable:
     Type: AWS::EC2::RouteTable
     Properties:
       VpcId: !Ref VPC
       Tags:
         - Key: Name
-          Value: !Sub ${EnvironmentName} Public Routes
+          Value: !Sub ${EnvironmentName} Public Subnet Web 1 Route Table
 
-  DefaultPublicRoute:
+  PublicSubnetWeb1Route:
     Type: AWS::EC2::Route
     DependsOn: InternetGatewayAttachment
     Properties:
-      RouteTableId: !Ref PublicRouteTable
+      RouteTableId: !Ref PublicSubnetWeb1RouteTable
       DestinationCidrBlock: 0.0.0.0/0
       GatewayId: !Ref InternetGateway
 
   PublicSubnetWeb1RouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
-      RouteTableId: !Ref PublicRouteTable
+      RouteTableId: !Ref PublicSubnetWeb1RouteTable
       SubnetId: !Ref PublicSubnetWeb1
+
+  PublicSubnetWeb2RouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPC
+      Tags:
+        - Key: Name
+          Value: !Sub ${EnvironmentName} Public Subnet Web 2 Route Table
+
+  PublicSubnetWeb2Route:
+    Type: AWS::EC2::Route
+    DependsOn: InternetGatewayAttachment
+    Properties:
+      RouteTableId: !Ref PublicSubnetWeb2RouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway
 
   PublicSubnetWeb2RouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
-      RouteTableId: !Ref PublicRouteTable
+      RouteTableId: !Ref PublicSubnetWeb2RouteTable
       SubnetId: !Ref PublicSubnetWeb2
 
-  PrivateRouteTable1:
+  PrivateSubnetApp1RouteTable:
     Type: AWS::EC2::RouteTable
     Properties:
       VpcId: !Ref VPC
       Tags:
         - Key: Name
-          Value: !Sub ${EnvironmentName} Private Routes (AZ1)
+          Value: !Sub ${EnvironmentName} Private Subnet App 1 Route Table
 
-  DefaultPrivateRoute1:
+  PrivateSubnetApp1Route:
     Type: AWS::EC2::Route
+    DependsOn: InternetGatewayAttachment
     Properties:
-      RouteTableId: !Ref PrivateRouteTable1
+      RouteTableId: !Ref PrivateSubnetApp1RouteTable
       DestinationCidrBlock: 0.0.0.0/0
-      NatGatewayId: !Ref NatGateway1
+      GatewayId: !Ref NATGateway1
 
   PrivateSubnetApp1RouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
-      RouteTableId: !Ref PrivateRouteTable1
+      RouteTableId: !Ref PrivateSubnetApp1RouteTable
       SubnetId: !Ref PrivateSubnetApp1
 
-  PrivateSubnetDB1RouteTableAssociation:
-    Type: AWS::EC2::SubnetRouteTableAssociation
-    Properties:
-      RouteTableId: !Ref PrivateRouteTable1
-      SubnetId: !Ref PrivateSubnetDB1
-
-  PrivateRouteTable2:
+  PrivateSubnetApp2RouteTable:
     Type: AWS::EC2::RouteTable
     Properties:
       VpcId: !Ref VPC
       Tags:
         - Key: Name
-          Value: !Sub ${EnvironmentName} Private Routes (AZ2)
+          Value: !Sub ${EnvironmentName} Private Subnet App 2 Route Table
 
-  DefaultPrivateRoute2:
+  PrivateSubnetApp2Route:
     Type: AWS::EC2::Route
+    DependsOn: InternetGatewayAttachment
     Properties:
-      RouteTableId: !Ref PrivateRouteTable2
+      RouteTableId: !Ref PrivateSubnetApp2RouteTable
       DestinationCidrBlock: 0.0.0.0/0
-      NatGatewayId: !Ref NatGateway2
+      GatewayId: !Ref NATGateway2
 
   PrivateSubnetApp2RouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
-      RouteTableId: !Ref PrivateRouteTable2
+      RouteTableId: !Ref PrivateSubnetApp2RouteTable
       SubnetId: !Ref PrivateSubnetApp2
 
-  PrivateSubnetDB2RouteTableAssociation:
-    Type: AWS::EC2::SubnetRouteTableAssociation
-    Properties:
-      RouteTableId: !Ref PrivateRouteTable2
-      SubnetId: !Ref PrivateSubnetDB2
+# what route for DB?  if no Internet?
 
   SecurityGroupWeb:
     Type: AWS::EC2::SecurityGroup
@@ -335,6 +319,9 @@ Resources:
           CidrIp: 0.0.0.0/0
   
   NetworkACLWeb:
+    Type: AWS::EC2::NetworkAcl
+    Properties:
+      VpcId: !Ref VPC
 
 Outputs:
   VPC:
