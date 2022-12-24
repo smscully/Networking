@@ -3,7 +3,7 @@ This sample application uses AWS CloudFormation templates to create a resource s
 
 ## Templates
 The following templates . . .
-+ **securevpc.yaml:** Creates a multi-AZ VPC two public subnets for EC2 web servers, two private subnets for EC2 application servers, and two private subnets for MySQL databases.  Standard security components are also created, include an Internet Gateway, NAT Gateways, security groups, Network ACLs, and . . .
++ **vpc.yaml:** Creates a multi-AZ VPC two public subnets for EC2 web servers, two private subnets for EC2 application servers, and two private subnets for MySQL databases.  Standard security components are also created, include an Internet Gateway, NAT Gateways, security groups, Network ACLs, and . . .
 + **instances.yaml:** Creates an application load balancer, auto scaling group, EC2 instances, and database instances. . .
 + **cloudwatch.yaml:** Creates CloudWatch events (?), alarms (?)
 
