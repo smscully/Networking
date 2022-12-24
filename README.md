@@ -7,6 +7,8 @@ The following templates . . .
 + **instances.yaml:** Creates an application load balancer, auto scaling group, EC2 instances, and database instances. . .
 + **cloudwatch.yaml:** Creates CloudWatch events (?), alarms (?)
 
-## Notes
+## Modification Notes
+Some of the template code that lends itself to quick customization includes:
++ Route Table Entries: 
 
 (should i create a cfn to create the launch template?, with parameter option to provide name of instance AMI?)
