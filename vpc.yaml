@@ -282,13 +282,40 @@ Resources:
       RouteTableId: !Ref PrivateSubnetApp2RouteTable
       SubnetId: !Ref PrivateSubnetApp2
 
-# what route for DB?  if no Internet?
+  PrivateSubnetDB1RouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPC
+      Tags:
+        - Key: Name
+          Value: !Sub ${EnvironmentName} Private Subnet DB 1 Route Table
+
+
+  PrivateSubnetDB1RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PrivateSubnetDB1RouteTable
+      SubnetId: !Ref PrivateSubnetDB1
+
+  PrivateSubnetDB2RouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPC
+      Tags:
+        - Key: Name
+          Value: !Sub ${EnvironmentName} Private Subnet DB 2 Route Table
+
+  PrivateSubnetDB2RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PrivateSubnetDB2RouteTable
+      SubnetId: !Ref PrivateSubnetDB2
 
   SecurityGroupWeb:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: "Security group for web servers"
-      GroupName: "sg-web"
+      GroupName: "SecurityGroupWeb"
       VpcId: !Ref VPC
       SecurityGroupIngress:
         - IpProtocol: tcp
@@ -301,11 +328,12 @@ Resources:
           ToPort: 80
           CidrIp: 0.0.0.0/0
 
+#for this, it appears will need to use AWS::EC2::SecurityGroupEgress??????
   SecurityGroupApp:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: "Security group for app servers"
-      GroupName: "sg-web"
+      GroupName: "SecurityGroupApp"
       VpcId: !Ref VPC
       SecurityGroupIngress:
         - IpProtocol: tcp *NOTE - this should be the Web Security Group - how to do it?""
