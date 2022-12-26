@@ -41,8 +41,7 @@ Metadata:
       PublicSubnetWeb2CIDR:
         default: Public Subnet Web 2 CIDR
       VPCCIDR:
-        default: VPC CIDR      VPCTenancy:
-        default: VPC tenancy
+        default: VPC CIDR
 
 Parameters:
   AvailabilityZones:
