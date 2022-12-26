@@ -16,7 +16,7 @@ Metadata:
       - Label:
           default: Network Configuration
         Parameters:
-          - VpcCIDR
+          - VPCCIDR
           - PublicSubnetWeb1CIDR
           - PublicSubnetWeb2CIDR
           - PrivateSubnetApp1CIDR
