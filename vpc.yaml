@@ -251,7 +251,7 @@ Resources:
     Properties:
       RouteTableId: !Ref PrivateSubnetApp1RouteTable
       DestinationCidrBlock: 0.0.0.0/0
-      GatewayId: !Ref NATGateway1
+      NatGatewayId: !Ref NATGateway1
 
   PrivateSubnetApp1RouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
@@ -273,7 +273,7 @@ Resources:
     Properties:
       RouteTableId: !Ref PrivateSubnetApp2RouteTable
       DestinationCidrBlock: 0.0.0.0/0
-      GatewayId: !Ref NATGateway2
+      NatGatewayId: !Ref NATGateway2
 
   PrivateSubnetApp2RouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
