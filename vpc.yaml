@@ -336,7 +336,7 @@ Resources:
       GroupName: "SecurityGroupApp"
       VpcId: !Ref VPC
       SecurityGroupIngress:
-        - IpProtocol: tcp *NOTE - this should be the Web Security Group - how to do it?""
+        - IpProtocol: tcp
           FromPort: 80
           ToPort: 80
           CidrIp: 0.0.0.0/0
