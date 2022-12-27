@@ -337,11 +337,11 @@ Resources:
   SecurityGroupAppInboundRule:
     Type: AWS::ECS::SecurityGroupIngress
       Properties:
-        - IpProtocol: tcp
-          FromPort: 80
-          ToPort: 80
-          SourceSecurityGroupID: !Ref SecurityGroupWeb
-          GroupID: !Ref SecurityGroupApp
+        IpProtocol: tcp
+        FromPort: 80
+        ToPort: 80
+        SourceSecurityGroupID: !Ref SecurityGroupWeb
+        GroupID: !Ref SecurityGroupApp
   
   NetworkACLWeb:
     Type: AWS::EC2::NetworkAcl
