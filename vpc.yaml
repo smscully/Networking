@@ -5,7 +5,7 @@ Description: Creates a VPC with subnets across two Availability Zones for public
   app, and database servers, Network ACLs for the subnets, and a VPC Gateway Endpoint for S3 connectivity.
 
 Metadata:
-  License: Apache License, Version 3.0
+  License: GNU General Public License v3.0
   AWS::CloudFormation::Interface:
     ParameterGroups:
       - Label:
