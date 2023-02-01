@@ -6,7 +6,7 @@ This AWS CloudFormation template creates a Virtual Private Cloud (VPC) that prov
 Before launching the template, always review the resources that will be created, as some resources may not be free-tier elegible.  In this case, for example, the NAT Gateways incur an hourly charge.  Please refer to the AWS website for specific regional pricing: [Amazon VPC Pricing](https://aws.amazon.com/vpc/pricing/)
 
 ## Template Overview
-The vpc.yaml template create the following type and number of AWS resources:
+The vpc.yaml template creates the following types and number of AWS resources:
 
 + VPC (1)
 + Public Subnets (2)
