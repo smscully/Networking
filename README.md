@@ -3,7 +3,7 @@ This AWS CloudFormation template creates a Virtual Private Cloud (VPC) that prov
 
 ![VPC diagram](https://github.com/smscully/Networking/blob/main/docs/VPC-Multi-AZ%20VPC.drawio.png)
 
-Before launching the template, always review the resources that will be created, as some resources may not be free-tier elegible.  In this case, for example, the NAT Gateways incur an hourly charge.  Please refer to the AWS website for specific regional pricing: [Amazon VPC Pricing](https://aws.amazon.com/vpc/pricing/)
+Before launching the template, always review the resources that will be created, as some resources may not be free-tier elegible.  In this case, for example, the NAT Gateways incur an hourly charge.  Please refer to the AWS website for specific regional pricing: [Amazon VPC Pricing](https://aws.amazon.com/vpc/pricing/ target="_blank")
 
 ## Template Overview
 The vpc.yaml template create the following type and number of AWS resources:
