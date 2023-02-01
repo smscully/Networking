@@ -9,13 +9,9 @@ Metadata:
   AWS::CloudFormation::Interface:
     ParameterGroups:
       - Label:
-          default: Environment Configuration
+          default: Environment and Network Configuration
         Parameters:
           - EnvironmentName
-          - AvailabilityZones
-      - Label:
-          default: Network Configuration
-        Parameters:
           - VPCCIDR
           - PublicSubnetWeb1CIDR
           - PublicSubnetWeb2CIDR
@@ -24,8 +20,6 @@ Metadata:
           - PrivateSubnetDB1CIDR
           - PrivateSubnetDB2CIDR
     ParameterLabels:
-      AvailabilityZones:
-        default: Availability Zones
       EnvironmentName:
         default: Envronment Name
       PrivateSubnetApp1CIDR:
@@ -44,12 +38,10 @@ Metadata:
         default: VPC CIDR
 
 Parameters:
-  AvailabilityZones:
-    Description: Please select two Availability Zones
-    Type: List<AWS::EC2::AvailabilityZone::Name>
   EnvironmentName:
     Description: Please enter an environment name to identify each stack resource
     Type: String
+    Default: Multi-AZ VPC
   PrivateSubnetApp1CIDR:
     Description: Please enter the CIDR block for the private application server subnet in the first Availability Zone
     Type: String
