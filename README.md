@@ -1,5 +1,9 @@
-# Secure Multi-Tier Application Using CloudFormation
-This sample application uses AWS CloudFormation templates to create a resource stack for a secure multi-tier, load balanced application with auto scaling.  Before launching the templates, always review the resources that will be created, as some resources may not be free-tier elegible.
+# Multi-AZ VPC CloudFormation Template
+This AWS CloudFormation template creates a Virtual Private Cloud (VPC) that provides the network backbone for a three-tier web application.  Components include public and private subnets spread over two Availability Zones; an Internet Gateway and redundant NAT Gateways; NACLs to secure ingress and outgress traffic to each subnet; and Security Groups for the web, application, and database tiers.  The architectural diagram below shows the resources created by the template.
+
+
+
+Before launching the templates, always review the resources that will be created, as some resources may not be free-tier elegible.
 
 ## Templates
 The following templates . . .
