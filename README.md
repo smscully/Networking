@@ -17,7 +17,7 @@ The vpc.yaml template create the following type and number of AWS resources:
 + NAT Gateways (2)
 
 ## List of Parameters
-The template parameters, listed below, can be modified as necessary to fit within the design of the AWS account.  The CIDR block ranges, for example, can be changed if required to avoid matching or overlapping blocks when peering VPCs.  The default parameter values can be updated directly in the CloudFormation template, through the console, or via customizing the parameter.json file if using the AWS CLI.
+The template parameters, listed below, can be modified as necessary to fit within the design of the AWS account.  The CIDR block ranges, for example, can be changed if required to avoid matching or overlapping blocks when peering VPCs.  The default parameter values can be updated directly in the CloudFormation template, through the console when creating the stack, or via customizing the parameter.json file if using the AWS CLI.
 
 |Parameter|Description|Default Value|
 |---------|-----------|-------------|
