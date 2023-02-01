@@ -35,6 +35,11 @@ The template parameters, listed below, can be modified as necessary to fit withi
 ### Prerequisites
 The template may be deployed using the the command line, which requires installation of the AWS CLI, or the console.
 
-## Modification Notes
+## Customization
 Some of the template code that lends itself to quick customization includes:
++ Specific AZs: The template uses the instrinsic function FN::GetAZs to return an array of AZs in the region, and then selects the first two values in the array.  To use different AZs, either change the index reference to the array value, or replace function call with the explicit name of the AZ.
+```yaml
+FN::GetAZs
+????
+```
 + Route Table Entries: 
