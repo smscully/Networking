@@ -21,14 +21,28 @@ The template parameters, listed below, can be modified as necessary to fit withi
 
 |Parameter|Description|Default Value|
 |---------|-----------|-------------|
-|EnvironmentName|The environment name used by CloudFormation to identify each resource.|??|
-|VPCCIDR  |The CIDR block of the VPC.|10.0.0.0/16|
-|PublicSubnetWeb1CIDR|The CIDR block of the public web server subnet in AZ1.|10.0.10.0/24|
-|PublicSubnetWeb2CIDR|The CIDR block of the public web server subnet in AZ2.|10.0.11.0/24|
-|PrivateSubnetApp1CIDR|The CIDR block of the private app server subnet in AZ1.|10.0.20.0/24|
-|PrivateSubnetApp2CIDR|The CIDR block of the private app server subnet in AZ2.|10.0.21.0/24|
-|PrivateSubnetDB1CIDR|The CIDR block of the private database server subnet in AZ1.|10.0.30.0/24|
-|PrivateSubnetDB2CIDR|The CIDR block of the private database server subnet in AZ2.|10.0.31.0/24|
+|EnvironmentName|Environment name used by CloudFormation to identify each resource.|??|
+|VPCCIDR|CIDR block of the VPC.|10.0.0.0/16|
+|PublicSubnetWeb1CIDR|CIDR block of the public web server subnet in AZ1.|10.0.10.0/24|
+|PublicSubnetWeb2CIDR|CIDR block of the public web server subnet in AZ2.|10.0.11.0/24|
+|PrivateSubnetApp1CIDR|CIDR block of the private app server subnet in AZ1.|10.0.20.0/24|
+|PrivateSubnetApp2CIDR|CIDR block of the private app server subnet in AZ2.|10.0.21.0/24|
+
+## Stack Output Values
+Resource names and properties can be exported as stack output values.  Stacks in the same AWS account and region can import these values to reference or access the resources.  As an example, a subnet ID exported as an output value can be referenced as a launch destination for an EC2 instance created by another stack.  As shown below, this stack exports the names of the VPC, subnets, and security groups, which can then be referenced by other stacks that create EC2 instances, RDS DBs, or other resources.
+
+|Output|Description|Example Value|
+|---------|-----------|-------------|
+|VPC|A reference to the created VPC|??|
+|PublicSubnetWeb1|Reference to the public subnet for web servers in AZ1.|??|
+|PublicSubnetWeb2|Reference to the public subnet for web servers in AZ2.|??|
+|PrivateSubnetApp1|Reference to the private subnet for app servers in AZ1.|??|
+|PrivateSubnetApp2|Reference to the private subnet for app servers in AZ2.|??|
+|PrivateSubnetDB1|Reference to the private subnet for database servers in AZ1.|??|
+|PrivateSubnetDB2|Reference to the private subnet for database servers in AZ2.|??|
+|SecurityGroupWeb|Reference to the security group for web server instances.|??|
+|SecurityGroupApp|Reference to the security group for app server instances.|??|
+|SecurityGroupDB|Reference to the security group for RDS DB server instances.|??|
 
 ## Deployment Instructions
 
