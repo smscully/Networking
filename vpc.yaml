@@ -342,29 +342,42 @@ Resources:
 
 Outputs:
   VPC:
-    Description: A reference to the created VPC
+    Description: Reference to the created VPC
     Value: !Ref VPC
 
   PublicSubnetWeb1:
-    Description: A reference to the public subnet for web servers in the first Availability Zone
+    Description: Reference to the public subnet for web servers in AZ1.
     Value: !Ref PublicSubnetWeb1
 
   PublicSubnetWeb2:
-    Description: A reference to the public subnet for web servers in the second Availability Zone
+    Description: Reference to the public subnet for web servers in AZ2.
     Value: !Ref PublicSubnetWeb2
 
   PrivateSubnetApp1:
-    Description: A reference to the private subnet for app servers in the first Availability Zone
+    Description: Reference to the private subnet for app servers in AZ1.
     Value: !Ref PrivateSubnetApp1
 
   PrivateSubnetApp2:
-    Description: A reference to the private subnet for app servers in the second Availability Zone
+    Description: Reference to the private subnet for app servers in AZ2.
     Value: !Ref PrivateSubnetApp2
 
   PrivateSubnetDB1:
-    Description: A reference to the private subnet for database servers in the first Availability Zone
+    Description: Reference to the private subnet for database servers in AZ1.
     Value: !Ref PrivateSubnetDB1
 
   PrivateSubnetDB2:
-    Description: A reference to the private subnet for database servers in the second Availability Zone
+    Description: Reference to the private subnet for database servers in AZ2.
     Value: !Ref PrivateSubnetDB2
+
+  SecurityGroupWeb:
+    Description: Reference to the security group for web server instances.
+    Value: !Ref SecurityGroupWeb
+
+  SecurityGroupApp:
+    Description: Reference to the security group for app server instances.
+    Value: !Ref SecurityGroupApp
+
+  SecurityGroupDB:
+    Description: Reference to the security group for RDS DB server instances.
+    Value: !Ref SecurityGroupDB
+
