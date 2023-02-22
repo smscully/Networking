@@ -326,14 +326,23 @@ Resources:
       VpcId: !Ref VPC
   
   SecurityGroupAppInboundRule:
-    Type: AWS::ECS::SecurityGroupIngress
-      Properties:
-        IpProtocol: tcp
-        FromPort: 80
-        ToPort: 80
-        SourceSecurityGroupID: !Ref SecurityGroupWeb
-        GroupID: !Ref SecurityGroupApp
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      IpProtocol: tcp
+      FromPort: 80
+      ToPort: 80
+      #SourceSecurityGroupID: !Ref SecurityGroupWeb
+      GroupID: !Ref SecurityGroupApp
   
+  SecurityGroupDB:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: "Security group for DB servers"
+      GroupName: "SecurityGroupDB"
+      VpcId: !Ref VPC
+  
+  #Placeholder for SecurityGroupDB rules
+
   NetworkACLWeb:
     Type: AWS::EC2::NetworkAcl
     Properties:
