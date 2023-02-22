@@ -51,12 +51,23 @@ The template may be deployed using the the command line, which requires installa
 
 ## Customization
 Some of the template code that lends itself to quick customization includes:
-+ **Specific AZs:** The template uses the instrinsic function FN::GetAZs to return an array of AZs in the region, and then selects the first two values in the array.  To use different AZs, either change the index reference to the array value, or replace function call with the explicit name of the AZ.  For example, replace instrinsic !Select function calls to !GetAZs:
++ **Specific AZs:** The template uses the instrinsic function FN::GetAZs to return an array of AZs in the region, and then selects the first two values in the array.  To use different AZs, either change the index reference to the array value, or replace function call with the explicit name of the AZ.
+
+For example, replace the instrinsic !Select function calls to !GetAZs:
 ```yaml
 AvailabilityZone: !Select [ 0, !GetAZs '' ]
 ```
-With the AWS name of the AZ:
+With the AWS name of a specific AZ:
 ```yaml
 AvailabilityZone: us-east-1a
 ```
-+ Route Table Entries: 
++ DB Subnet Route Table Entries: Because RDS is a fully-managed service, the DB subnet route tables do not contain entries to the NAT gateways.  For self-managed databases, update each route table with a route to the NAT gateway in the appropriate AZ:
+```yaml
+PrivateSubnetDB1Route:
+  Type: AWS::EC2::Route
+  DependsOn: InternetGatewayAttachment
+  Properties:
+    RouteTableId: !Ref PrivateSubnetDB1RouteTable
+    DestinationCidrBlock: 0.0.0.0/0
+    NatGatewayId: !Ref NATGateway1
+```
