@@ -1,8 +1,8 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Description: Creates a VPC with subnets across two Availability Zones for public web servers, private app servers, 
-  and private database servers. For connectivity, creates an Internet Gateway, NAT Gateways for each AZ, and Route
-  Tables for the public and private subnets. Following security best practicies, implements Security Groups for the web,
-  app, and database servers, Network ACLs for the subnets, and a VPC Gateway Endpoint for S3 connectivity.
+  and private database servers. For connectivity, creates an internet gateway, NAT gateways for each AZ, and route
+  tables for the public and private subnets. Following security best practicies, implements security groups for the web,
+  app, and database servers, NACLs for the subnets, and a gateway endpoint for S3 connectivity.
 
 Metadata:
   License: GNU General Public License v3.0
@@ -281,7 +281,6 @@ Resources:
         - Key: Name
           Value: !Sub ${EnvironmentName} Private Subnet DB 1 Route Table
 
-
   PrivateSubnetDB1RouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
@@ -380,4 +379,3 @@ Outputs:
   SecurityGroupDB:
     Description: Reference to the security group for RDS DB server instances.
     Value: !Ref SecurityGroupDB
-
