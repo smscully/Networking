@@ -1,7 +1,7 @@
 # Multi-AZ VPC CloudFormation Template
 This AWS CloudFormation template creates a virtual private cloud (VPC) that provides the network backbone for a three-tier web application.  Components include public and private subnets spread over two Availability Zones; an internet gateway (IGW) and redundant NAT gateways; network access control lists (NACL) to secure inbound and outbound subnet traffic; and Security Groups for the instances in the web, application, and database tiers.  The architectural diagram below shows the network resources created by the template.
 
-![VPC diagram](https://github.com/smscully/Networking/blob/main/Multi-AZ-VPC/docs/VPC-Multi-AZ-VPC.png)
+![VPC diagram](https://github.com/smscully/Networking/blob/main/Multi-AZ-VPC/docs/Multi-AZ-VPC.png)
 
 Before launching the template, always review the resources that will be created, as some resources may not be free-tier elegible.  In this case, for example, the NAT Gateways incur an hourly charge.  Please refer to the AWS website for specific regional pricing: [Amazon VPC Pricing](https://aws.amazon.com/vpc/pricing/)
 
