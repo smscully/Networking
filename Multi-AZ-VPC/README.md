@@ -71,3 +71,14 @@ PrivateSubnetDB1Route:
     DestinationCidrBlock: 0.0.0.0/0
     NatGatewayId: !Ref NATGateway1
 ```
+
+## License
+
+Licensed under the [GNU General Public License v3.0](../LICENSE).
+
+## References
+[^1]:See [Tagging Best Practices](https://docs.aws.amazon.com/whitepapers/latest/tagging-best-practices/tagging-best-practices.html).
+[^2]:See [Establishing Your Cloud Foundation on AWS, Choosing tags for your environment](https://docs.aws.amazon.com/whitepapers/latest/establishing-your-cloud-foundation-on-aws/welcome.html).
+[^3]:See [AWS General Reference, Amazon Resource Names (ARNs)](https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html).
+[^4]:See [AWS CloudFormation User Guide, Continuous delivery with CodePipeline](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/continuous-delivery-codepipeline.html).
+[^5]:See [AWS CloudFormation User Guide, AWS CloudFormation artifacts](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/continuous-delivery-codepipeline-cfn-artifacts.html).
